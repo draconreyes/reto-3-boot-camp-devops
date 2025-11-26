@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microblog
+  namespace: microblog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: microblog
+  template:
+    metadata:
+      labels:
+        app: microblog
+    spec:
+      containers:
+      - name: microblog
+        image: 886252661956.dkr.ecr.us-east-1.amazonaws.com/reto-3/microblog:v1
+        env:
+        - name: FLASK_APP
+          value: microblog.py
+        - name: FLASK_ENV
+          value: development
+        - name: SECRET_KEY
+          value: "clave-super-secreta"
+        - name: DATABASE_URL
+          value: "postgresql+psycopg2://microblog_user:microblog_pass@postgres:5432/microblog_db"
+        ports:
+        - containerPort: 5000
